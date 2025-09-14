@@ -2,6 +2,8 @@
 
 This project demonstrates how to implement Microsoft OAuth authentication with AWS Bedrock AgentCore and create a streaming response agent with custom tools.
 
+> 🎬 **[📺 Watch the Complete Video Tutorial](https://youtu.be/LEiOtsYEpWk)** - See everything in action!
+
 ## 🎯 Overview
 
 - **Microsoft OAuth Authentication**: Secure login using Microsoft Azure AD
@@ -9,7 +11,13 @@ This project demonstrates how to implement Microsoft OAuth authentication with A
 - **Custom Tools**: Built-in tools for calculations and location-based services
 - **Streamlit UI**: User-friendly web interface for agent interaction
 
-## 📋 Prerequisites
+## � Quick Start
+
+**🎥 New to this project? [Watch the video tutorial first!](https://youtu.be/LEiOtsYEpWk)** 
+
+It covers everything from setup to deployment in just a few minutes.
+
+## �📋 Prerequisites
 
 ### Microsoft Azure Setup
 
@@ -254,7 +262,11 @@ If you encounter issues:
 
 ## 🎥 Demo
 
-Watch the complete video tutorial: **[Microsoft Authentication in AWS Bedrock AgentCore + Streaming AI Agent](https://youtu.be/LEiOtsYEpWk)**
+### 📹 Complete Video Tutorial
+
+[![Microsoft Authentication in AWS Bedrock AgentCore + Streaming AI Agent](https://img.youtube.com/vi/LEiOtsYEpWk/maxresdefault.jpg)](https://youtu.be/LEiOtsYEpWk)
+
+**🎬 [Watch the Full Tutorial](https://youtu.be/LEiOtsYEpWk) - Click the thumbnail above!**
 
 The project includes a complete working example with:
 - Microsoft authentication flow
