@@ -1,0 +1,13 @@
+
+boto3
+requests
+streamlit
+python-dotenv
+bedrock-agentcore
+strands-agents-tools 
+strands-agents-builder
+strands-agents
+bedrock_agentcore_starter_toolkit 
+msal 
+requests 
+PyJWT 

@@ -1,0 +1,34 @@
+default_agent: strands_wo_memory_entra_inbound
+agents:
+  strands_wo_memory_entra_inbound:
+    name: strands_wo_memory_entra_inbound
+    entrypoint: C:/Users/Kavitha padala/Desktop/agentcore/agent.py
+    platform: linux/arm64
+    container_runtime: docker
+    aws:
+      execution_role: arn:aws:iam::061051234909:role/AmazonBedrockAgentCoreSDKRuntime-us-west-2-af0eb0bbdd
+      execution_role_auto_create: false
+      account: 061051234909
+      region: us-west-2
+      ecr_repository: 061051234909.dkr.ecr.us-west-2.amazonaws.com/bedrock-agentcore-strands_wo_memory_entra_inbound
+      ecr_auto_create: false
+      network_configuration:
+        network_mode: PUBLIC
+      protocol_configuration:
+        server_protocol: HTTP
+      observability:
+        enabled: true
+    bedrock_agentcore:
+      agent_id: strands_wo_memory_entra_inbound-jmwPTxG0aK
+      agent_arn: arn:aws:bedrock-agentcore:us-west-2:061051234909:runtime/strands_wo_memory_entra_inbound-jmwPTxG0aK
+      agent_session_id: null
+    codebuild:
+      project_name: bedrock-agentcore-strands_wo_memory_entra_inbound-builder
+      execution_role: arn:aws:iam::061051234909:role/AmazonBedrockAgentCoreSDKCodeBuild-us-west-2-af0eb0bbdd
+      source_bucket: bedrock-agentcore-codebuild-sources-061051234909-us-west-2
+    authorizer_configuration:
+      customJWTAuthorizer:
+        discoveryUrl: https://login.microsoftonline.com/31386ae4-e5c5-4956-80b9-3868597721b3/v2.0/.well-known/openid-configuration
+        allowedAudience:
+        - 58e9be75-255b-4f00-9311-4cf03506dec8
+    oauth_configuration: null
