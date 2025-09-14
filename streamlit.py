@@ -7,7 +7,7 @@ import base64
 import secrets
 from dotenv import load_dotenv
 import time
-
+import yaml
 # Load environment variables
 load_dotenv()
 
@@ -16,14 +16,34 @@ CLIENT_ID = os.getenv('CLIENT_ID')
 CLIENT_SECRET = os.getenv('CLIENT_SECRET')
 TENANT_ID = os.getenv('TENANT_ID', 'common')
 AUTHORITY = os.getenv('AUTHORITY')
-REDIRECT_URI = "http://localhost:8501"  # Streamlit default
-DEFAULT_SCOPE = "api://58e9be75-255b-4f00-9311-4cf03506dec8/access"
+REDIRECT_URI = os.getenv('REDIRECT_URI') # Streamlit default
+
+SCOPE = os.getenv('SCOPE')
 # Agent Configuration
-AGENT_ARN = "arn:aws:bedrock-agentcore:us-west-2:061051234909:runtime/strands_wo_memory_entra_inbound-jmwPTxG0aK"
-AWS_REGION = "us-west-2"
+
+def get_agent_arn_from_yaml(yaml_file_path):
+    with open(yaml_file_path, 'r') as file:
+        config = yaml.safe_load(file)
+    
+    default_agent = config.get('default_agent')
+    if default_agent and default_agent in config.get('agents', {}):
+        agent_config = config['agents'][default_agent]
+        return agent_config.get('bedrock_agentcore', {}).get('agent_arn')
+    
+    return None
+
+
+yaml_file_path = ".bedrock_agentcore.yaml"  # Replace with your YAML file path
+AGENT_ARN = get_agent_arn_from_yaml(yaml_file_path)
+
+
+
+
+
+AWS_REGION = os.getenv('AWS_REGION')
 
 # Microsoft Graph scopes
-SCOPES = ["openid", "profile", "email",DEFAULT_SCOPE]
+SCOPES = ["openid", "profile", "email",SCOPE]
 
 def get_auth_url():
     """Generate Microsoft OAuth2 authorization URL"""
@@ -173,12 +193,12 @@ def invoke_bedrock_agent(prompt, access_token):
 
 def main():
     st.set_page_config(
-        page_title="Microsoft Auth + Bedrock Agent",
-        page_icon="🤖",
+        page_title="Microsoft Authentication Agentcore Agent with Streaming Support",
+        page_icon="",
         layout="wide"
     )
     
-    st.title("🤖 Microsoft Auth + Bedrock Agent Chat")
+    st.title("Microsoft Authentication Agentcore Agent with Streaming Support")
     st.markdown("---")
     
     # Check for authorization code in URL parameters
@@ -213,10 +233,10 @@ def main():
         col1, col2, col3 = st.columns([1, 2, 1])
         
         with col2:
-            st.markdown("### 🔐 Please Login with Microsoft")
+            st.markdown("### Please Login with Microsoft")
             st.markdown("You need to authenticate with your Microsoft account to use the agent.")
             
-            if st.button("🚀 Login with Microsoft", use_container_width=True):
+            if st.button("Login with Microsoft", use_container_width=True):
                 auth_url, state = get_auth_url()
                 st.session_state.oauth_state = state  # Store state for validation
                 st.markdown(f"[Click here to login]({auth_url})")
@@ -225,7 +245,7 @@ def main():
             # Alternative: Show a simpler flow without state validation
             st.markdown("---")
             st.markdown("**Having issues with login?** Try the simplified flow:")
-            if st.button("🔓 Skip State Validation", use_container_width=True):
+            if st.button(" Skip State Validation", use_container_width=True):
                 auth_url, _ = get_auth_url()
                 # Don't store state - this will skip validation
                 st.markdown(f"[Click here to login (simplified)]({auth_url})")
@@ -237,10 +257,10 @@ def main():
         with col1:
             if 'user_info' in st.session_state:
                 user_info = st.session_state.user_info
-                st.success(f"✅ Logged in as: {user_info.get('displayName', 'Unknown')} ({user_info.get('mail', user_info.get('userPrincipalName', 'No email'))})")
+                st.success(f" Logged in as: {user_info.get('displayName', 'Unknown')} ({user_info.get('mail', user_info.get('userPrincipalName', 'No email'))})")
         
         with col2:
-            if st.button("🚪 Logout"):
+            if st.button(" Logout"):
                 # Clear session state
                 for key in list(st.session_state.keys()):
                     del st.session_state[key]
@@ -249,7 +269,7 @@ def main():
         st.markdown("---")
         
         # Chat interface
-        st.markdown("### 💬 Chat with Bedrock Agent")
+        st.markdown("###  Chat with Bedrock Agent")
         
         # Initialize chat history
         if "messages" not in st.session_state:
@@ -279,16 +299,16 @@ def main():
         
         # Sidebar with additional info
         with st.sidebar:
-            st.markdown("### 🔧 Configuration")
+            st.markdown("###  Configuration")
             st.markdown(f"**Agent ARN:** `{AGENT_ARN}`")
             
             
-            if st.button("🗑️ Clear Chat History"):
+            if st.button(" Clear Chat History"):
                 st.session_state.messages = []
                 st.rerun()
             
             st.markdown("---")
-            st.markdown("### 📊 Session Info")
+            st.markdown("###  Session Info")
            
 
 if __name__ == "__main__":
